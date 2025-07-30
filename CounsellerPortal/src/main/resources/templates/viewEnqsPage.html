@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>View Enquiries</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+      body {
+        background: url('https://images.unsplash.com/photo-1523580846011-d3a5bc25702b?auto=format&fit=crop&w=1600&q=80') no-repeat center center fixed;
+        background-size: cover;
+        min-height: 100vh;
+        font-family: 'Segoe UI', sans-serif;
+      }
+
+      .glass-box {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 16px;
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.3);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        padding: 30px;
+        margin-top: 40px;
+      }
+
+      h2 {
+        color: #fff;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.6);
+      }
+
+      .btn {
+        font-weight: 500;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      }
+
+      th, td {
+        background-color: rgba(255, 255, 255, 0.8) !important;
+      }
+
+      .table thead {
+        background-color: rgba(0, 0, 0, 0.6);
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+
+    <div class="container glass-box">
+      <!-- Navigation Buttons -->
+      <div class="d-flex flex-wrap mb-4 justify-content-center gap-3">
+        <a href="dashboard" class="btn btn-outline-light">View Dashboard</a>
+        <a href="enquiry" class="btn btn-outline-success">Add Enquiry</a>
+        <a href="view-enquiries" class="btn btn-outline-warning text-dark">View Enquiries</a>
+        <a href="logout" class="btn btn-outline-danger">Logout</a>
+      </div>
+
+      <h2 class="text-center mb-4">All Student Enquiries</h2>
+	  
+	  <form th:action="@{/filter-enqs}" th:object="${viewEnqsFilterRequest}" method="post">
+	    <div class="row g-3 mb-3 text-white">
+	      <div class="col-md-3">
+	        <label>Class Mode</label>
+	        <select class="form-select" th:field="*{classMode}">
+	          <option value="">-Select-</option>
+	          <option value="Online">Online</option>
+	          <option value="Classroom">Classroom</option>
+	        </select>
+	      </div>
+	      <div class="col-md-3">
+	        <label>Course Name</label>
+	        <select class="form-select" th:field="*{courseName}">
+	          <option value="">-Select-</option>
+	          <option value="Java">Java</option>
+	          <option value="ReactJS">ReactJS</option>
+	          <option value="SpringBootnMS">SpringBootnMS</option>
+	          <option value="AWS">AWS</option>
+	          <option value="DevOps">DevOps</option>
+	        </select>
+	      </div>
+	      <div class="col-md-3">
+	        <label>Enquiry Status</label>
+	        <select class="form-select" th:field="*{enqStatus}">
+	          <option value="">-Select-</option>
+	          <option value="Open">Open</option>
+	          <option value="Enrolled">Enrolled</option>
+	          <option value="Lost">Lost</option>
+	        </select>
+	      </div>
+	      <div class="col-md-3 d-flex align-items-end">
+	        <button type="submit" class="btn btn-success w-100">Search</button>
+	      </div>
+	    </div>
+	  </form>
+
+
+      <div class="table-responsive">
+        <table class="table table-hover table-bordered align-middle text-center">
+          <thead>
+            <tr>
+              <th>S No.</th>
+              <th>Name</th>
+              <th>Course</th>
+              <th>Mode</th>
+              <th>PhNo</th>
+              <th>Status</th>
+              <th>Edit</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:if="${#lists.isEmpty(enquiries)}">
+              <td colspan="7" class="text-center text-muted">No enquiries available.</td>
+            </tr>
+            <tr th:each="enq, indexStart: ${enquiries}">
+              <td th:text="${indexStart.index+1}"></td>
+              <td th:text="${enq.studentName}"></td>
+              <td th:text="${enq.courseName}"></td>
+              <td th:text="${enq.classMode}"></td>
+              <td th:text="${enq.studentPhNo}"></td>
+              <td th:text="${enq.enqStatus}"></td>
+              <td>
+                <a th:href="@{'/editEnq?enqId='+${enq.enquiryId}}" class="btn btn-sm btn-outline-primary">Edit</a>      //2408
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
