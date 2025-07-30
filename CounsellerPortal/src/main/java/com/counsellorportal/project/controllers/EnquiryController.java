@@ -95,7 +95,7 @@ public class EnquiryController {
 			model.addAttribute("emsg", " Failed To Add Enquiry");
 		}
 		
-		//To clear the form after adding ...
+		//To clear the form after adding .......
 		enquiry = new Enquiry();
 		model.addAttribute("enquiry", enquiry);
 		
